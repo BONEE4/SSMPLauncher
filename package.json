@@ -1,13 +1,13 @@
 {
-    "name": "HastaStudiosLauncher",
-    "version": "2.0.7",
-    "productName": "Hasta Studios Launcher",
-    "description": "Oficial Laucnher For All Hasta Studios And ZSMP Projects",
-    "author": "Shisuys (https://github.com/shisuiicaro/)",
+    "name": "vlmplauncher",
+    "version": "1.0.0",
+    "productName": "VLMP Launcher",
+    "description": "Oficial Laucnher For VLMP server",
+    "author": "BONEE (https://github.com/BONEE4/)",
     "license": "UNLICENSED",
-    "homepage": "https://github.com/Shisuiicaro/HastaStudiosLauncher",
+    "homepage": "https://github.com/BONEE4/VLPMLauncher",
     "bugs": {
-        "url": "https://discord.gg/zsmp"
+        "url": "https://discord.gg/vlmp"
     },
     "private": true,
     "main": "index.js",
@@ -47,6 +47,11 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Shisuiicaro/HastaStudiosLauncher.git"
+        "url": "git+https://github.com/BONEE4/VLMPLauncher.git"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "electron"
+        ]
     }
 }

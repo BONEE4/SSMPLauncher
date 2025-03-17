@@ -143,32 +143,32 @@ document.getElementById('avatarOverlay').onclick = async e => {
 
 // Bind selected account
 async function updateSelectedAccount(authUser) {
-  let username = Lang.queryJS('landing.selectedAccount.noAccountSelected');
-  const authAccounts = ConfigManager.getSelectedAccount();
+    let username = Lang.queryJS('landing.selectedAccount.noAccountSelected')
+    const authAccounts = ConfigManager.getSelectedAccount()
 
-  if (authUser != null) {
-    const acc = authAccounts;
+    if (authUser != null) {
+        const acc = authAccounts
 
-    if (authUser.displayName != null) {
-      username = authUser.displayName;
+        if (authUser.displayName != null) {
+            username = authUser.displayName
+        }
+
+        try {
+            if (acc.type === 'mojang') {
+                document.getElementById('avatarContainer').style.backgroundImage = 'url(\'https://visage.surgeplay.com/face/256/X-Steve\')'
+            } else if (acc.type === 'microsoft') {
+                document.getElementById('avatarContainer').style.backgroundImage = `url('https://visage.surgeplay.com/face/256/${authUser.uuid}')`
+            }
+        } catch (error) {
+            console.error('Error setting skin image:', error)
+        }
     }
 
-    try {
-      if (acc.type === 'mojang') {
-        document.getElementById('avatarContainer').style.backgroundImage = `url('https://visage.surgeplay.com/face/256/X-Steve')`;
-      } else if (acc.type === 'microsoft') {
-        document.getElementById('avatarContainer').style.backgroundImage = `url('https://visage.surgeplay.com/face/256/${authUser.uuid}')`;
-      }
-    } catch (error) {
-      console.error('Error setting skin image:', error);
-    }
-  }
-
-  user_text.innerHTML = username;
+    user_text.innerHTML = username
 }
 
 // Call the function with the selected account
-updateSelectedAccount(ConfigManager.getSelectedAccount());
+updateSelectedAccount(ConfigManager.getSelectedAccount())
 
 // Bind selected server
 function updateSelectedServer(serv){

@@ -2,7 +2,7 @@
 const os     = require('os')
 const semver = require('semver')
 
-const fs = require('fs-extra');
+const fs = require('fs-extra')
 
 const LangLoader                                   = require('./assets/js/langloader')
 const DropinModUtil                                = require('./assets/js/dropinmodutil')
@@ -629,51 +629,51 @@ const settingsCurrentMojangAccounts = document.getElementById('settingsCurrentMo
  * Add auth account elements for each one stored in the authentication database.
  */
 async function fetchSkinAndConvertToBase64(username) {
-  try {
-    const skinURL = `https://auth.zelthoriaismp.cloud/skin/${username}.png`;
-    const response = await fetch(skinURL);
+    try {
+        const skinURL = `https://auth.zelthoriaismp.cloud/skin/${username}.png`
+        const response = await fetch(skinURL)
 
-    if (!response.ok) {
-      throw new Error('Error fetching skin image: ' + response.status);
+        if (!response.ok) {
+            throw new Error('Error fetching skin image: ' + response.status)
+        }
+
+        const blob = await response.blob()
+
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                resolve(reader.result.split(',')[1])
+            }
+            reader.onerror = reject
+            reader.readAsDataURL(blob)
+        })
+    } catch (error) {
+        return 'MHF_Question'
     }
-
-    const blob = await response.blob();
-
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result.split(',')[1]);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-  } catch (error) {
-    return 'MHF_Question';
-  }
 }
     
 async function populateAuthAccounts() {
-  const authAccounts = ConfigManager.getAuthAccounts();
-  const authKeys = Object.keys(authAccounts);
-  if (authKeys.length === 0) {
-    return;
-  }
-  const selectedUUID = ConfigManager.getSelectedAccount().uuid;
+    const authAccounts = ConfigManager.getAuthAccounts()
+    const authKeys = Object.keys(authAccounts)
+    if (authKeys.length === 0) {
+        return
+    }
+    const selectedUUID = ConfigManager.getSelectedAccount().uuid
 
-  let microsoftAuthAccountStr = '';
-  let mojangAuthAccountStr = '';
+    let microsoftAuthAccountStr = ''
+    let mojangAuthAccountStr = ''
 
-    const promises = [];
+    const promises = []
 
-  authKeys.forEach((val) => {
-    const acc = authAccounts[val]
+    authKeys.forEach((val) => {
+        const acc = authAccounts[val]
 
-promises.push(
+        promises.push(
             fetchSkinAndConvertToBase64(acc.displayName)
                 .then(result => {
-                    const encodedBase64 = encodeURIComponent(result);
+                    const encodedBase64 = encodeURIComponent(result)
                     const skinURL = 'https://visage.surgeplay.com/bust/256/X-Steve'
-                    const skinMSFT = `https://visage.surgeplay.com/bust/256/${acc.uuid}`;
+                    const skinMSFT = `https://visage.surgeplay.com/bust/256/${acc.uuid}`
 
                     const accBS = `<div class="settingsAuthAccount" uuid="${acc.uuid}">
         <div class="settingsAuthAccountLeft">
@@ -699,7 +699,7 @@ promises.push(
         </div>
     </div>`
     
-    const accMSFT = `<div class="settingsAuthAccount" uuid="${acc.uuid}">
+                    const accMSFT = `<div class="settingsAuthAccount" uuid="${acc.uuid}">
     <div class="settingsAuthAccountLeft">
         <img class="settingsAuthAccountImage" alt="${acc.displayName}" src="${skinMSFT}">
     </div>
@@ -723,21 +723,21 @@ promises.push(
     </div>
 </div>`
 
-    if(acc.type === 'microsoft') {
-        microsoftAuthAccountStr += accMSFT
-    } else {
-        mojangAuthAccountStr += accBS
-    }
-})
-.catch(error => {
-    console.error('Erro ao buscar e converter a imagem:', error);
-})
-);
-})
+                    if(acc.type === 'microsoft') {
+                        microsoftAuthAccountStr += accMSFT
+                    } else {
+                        mojangAuthAccountStr += accBS
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar e converter a imagem:', error)
+                })
+        )
+    })
 
-await Promise.all(promises);
+    await Promise.all(promises)
 
-    return { microsoftAuthAccountStr, mojangAuthAccountStr };
+    return { microsoftAuthAccountStr, mojangAuthAccountStr }
 }
 
 
@@ -745,11 +745,11 @@ await Promise.all(promises);
  * Prepare the accounts tab for display.
  */
 async function prepareAccountsTab() {
-    const { microsoftAuthAccountStr, mojangAuthAccountStr } = await populateAuthAccounts();
-    settingsCurrentMicrosoftAccounts.innerHTML = microsoftAuthAccountStr;
-    settingsCurrentMojangAccounts.innerHTML = mojangAuthAccountStr;
-    bindAuthAccountSelect();
-    bindAuthAccountLogOut();
+    const { microsoftAuthAccountStr, mojangAuthAccountStr } = await populateAuthAccounts()
+    settingsCurrentMicrosoftAccounts.innerHTML = microsoftAuthAccountStr
+    settingsCurrentMojangAccounts.innerHTML = mojangAuthAccountStr
+    bindAuthAccountSelect()
+    bindAuthAccountLogOut()
 }
 
 /**
@@ -1066,23 +1066,23 @@ async function reloadDropinMods(){
 
 //Languages
 let langCodes = {
-    "en_US": "English",
-    "pt_BR": "Portugues-BR",
+    'en_US': 'English',
+    'pt_BR': 'Portugues-BR',
 } 
 
 async function resolveLanguageForUI() {
-    let LANGUAGES, SELECTED_LANGUAGE;
+    let LANGUAGES, SELECTED_LANGUAGE
 
     ConfigManager.getAllLanguages((err, languages) => {
         if (err) {
-            console.error("Error:", err);
+            console.error('Error:', err)
         } else {
-            logger.info("Available languages:", languages);
-            LANGUAGES = languages;
-            SELECTED_LANGUAGE = ConfigManager.getCurrentLanguage();
-            setCurrentLanguageInUi(LANGUAGES, SELECTED_LANGUAGE);
+            logger.info('Available languages:', languages)
+            LANGUAGES = languages
+            SELECTED_LANGUAGE = ConfigManager.getCurrentLanguage()
+            setCurrentLanguageInUi(LANGUAGES, SELECTED_LANGUAGE)
         }
-    });
+    })
 }
 
 
@@ -1093,7 +1093,7 @@ function setCurrentLanguageInUi(arr, selected){
         const d = document.createElement('DIV')
         d.innerHTML = langCodes[opt]
         d.setAttribute('value', opt)
-        if(opt !== "_custom") {
+        if(opt !== '_custom') {
             if(opt === selected) {
                 d.setAttribute('selected', '')
                 document.getElementById('settingsLangSelected').innerHTML = langCodes[opt]

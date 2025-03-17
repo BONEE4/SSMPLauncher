@@ -417,135 +417,137 @@ class ProcessBuilder {
 
         async function findLineContainingString(filePath, searchString) {
             try {
-              const data = await fs.readFile(filePath, 'utf-8')
-              const lines = data.split('\n')
+                const data = await fs.readFile(filePath, 'utf-8')
+                const lines = data.split('\n')
           
-              for (const line of lines) {
-                if (line.includes(searchString)) {
-                  return line
+                for (const line of lines) {
+                    if (line.includes(searchString)) {
+                        return line
+                    }
                 }
-              }
-              return null
+                return null
             } catch (err) {
-              console.error(err)
-              return null
+                console.error(err)
+                return null
             }
-          }
-          async function ChangeOption(filePath, lineToReplace, newLine) {
+        }
+        async function ChangeOption(filePath, lineToReplace, newLine) {
             try {
-              const exists = await fs.pathExists(filePath)
-              if (exists) {
-                const foundLine = await findLineContainingString(filePath, lineToReplace)
-                if (foundLine) {
-                  let fileContent = await fs.readFile(filePath, 'utf8')
-                  fileContent = fileContent.replace(foundLine, newLine)
-                  await fs.outputFile(filePath, fileContent)
+                const exists = await fs.pathExists(filePath)
+                if (exists) {
+                    const foundLine = await findLineContainingString(filePath, lineToReplace)
+                    if (foundLine) {
+                        let fileContent = await fs.readFile(filePath, 'utf8')
+                        fileContent = fileContent.replace(foundLine, newLine)
+                        await fs.outputFile(filePath, fileContent)
+                    } else {
+                        await fs.appendFile(filePath, '\n' + newLine)
+                    }
                 } else {
-                  await fs.appendFile(filePath, '\n' + newLine)
+                    await fs.outputFile(filePath, newLine)
                 }
-              } else {
-                await fs.outputFile(filePath, newLine)
-              }
             } catch (err) {
-              console.error(err)
+                console.error(err)
             }
-          }
+        }
           
         if(ConfigManager.getSyncLanguage()) {          
-          ChangeOption(path.join(this.gameDir, "options.txt"), 'lang:', 'lang:' + ConfigManager.getCurrentLanguageLowercase())
+            ChangeOption(path.join(this.gameDir, 'options.txt'), 'lang:', 'lang:' + ConfigManager.getCurrentLanguageLowercase())
         }
 
         //args.push('-Dlog4j.configurationFile=D:\\WesterosCraft\\game\\common\\assets\\log_configs\\client-1.12.xml')
 
         // Java Arguments
         if(process.platform === 'darwin'){
+            // eslint-disable-next-line no-undef
             if(isDev){
                 
+                if (current.type === 'microsoft') {
+                    args.push('-Xdock:name=HastaStudioslauncher')
+                    args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
+                    args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
+                    args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
+                    args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
+                } else {
+                    args.push('-Xdock:name=HastaStudioslauncher')
+                    args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
+                    args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
+                    args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
+                    args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
+                    args.push('-Duser.language=es')
+                    args.push('-Dminecraft.api.env=custom')
+                    args.push('-Dminecraft.api.auth.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/authserver')
+                    args.push('-Dminecraft.api.account.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/api')
+                    args.push('-Dminecraft.api.session.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/sessionserver')
+                    args.push('-Dminecraft.api.services.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/minecraftservices')
+                    //    args.push(`-javaagent:${path.join(process.cwd(), 'libraries', 'java', 'HastaAuth.jar')}=https://auth.zelthoriaismp.cloud/api/yggdrasil`)
+                    //    args.push('-Dauthlibinjector.yggdrasil.prefetched=eyJtZXRhIjp7InNlcnZlck5hbWUiOiJaZWx0aG9yaWFpIFNNUCIsImltcGxlbWVudGF0aW9uTmFtZSI6IllnZ2RyYXNpbCBBUEkgZm9yIEJsZXNzaW5nIFNraW4iLCJpbXBsZW1lbnRhdGlvblZlcnNpb24iOiI1LjIuMSIsImxpbmtzIjp7ImhvbWVwYWdlIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZCIsInJlZ2lzdGVyIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZFwvYXV0aFwvcmVnaXN0ZXIifSwiZmVhdHVyZS5ub25fZW1haWxfbG9naW4iOnRydWV9LCJza2luRG9tYWlucyI6WyJhdXRoLnplbHRob3JpYWlzbXAuY2xvdWQiXSwic2lnbmF0dXJlUHVibGlja2V5IjoiLS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS1cbk1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBeUJpT3NQajVJd043NldXNGFWeldcblJXdVZKaVpHRUl6eWdzRGYyTWtXQ2xQbVk5S1FQM3RTYVJyK3FsZUhCRU9KMWhnZjNwbUJ5OFVuWjFNV3FJeU9cbkY5cTM1Rk4wV3hrVExQTVZLWkl3dkxZRk9GMUZwNWJheDZQRmhRbUJpU2xYelwvcHA1QmQyOHlrVkJOMWFUM1FQXG5zN0I3TDAxWnFxZlZNYzJNcHB0TUNpYmhsTU9xajFFcjVDdWwxSWJzYlJkbjdFOWl5QzVmdEZkR1BDK0F1OHpSXG5YWHhCdm1zbXZBSmliQmQzZU02dlBHRjJBNkxRbURIOHpGUU1NTlhUQWw3VG1PVjNmczR0Vmw0YThQNVJnSXFqXG5GM0JWVzNvYjlNTHJDTGs0MUpUTkZkYWthYjZCWlJSYjg2NndNN3UxXC9IcnlweU9idnV4NytKb3R6MnpMcFUzeFxuY25rZEZqQzFvYnZKd3pOQkhSXC8yc2hubWlmZ2RHZGRKbnVrN1hjRGkzeDh5cGJYcVNXQkJoZGxMRGc0emFYVjBcblhTa29YUUt2MTAzbUVTcVlUMEh5RjFwNzc2WnJJVnczR0R2c3BhRGxzYU13d01JRlFkN0toSitsMjl4clR0NEhcbjZtQWlVeGtNd1wvWEI4am82djc0ZklHcjZ5ZUZzTkFGTTBpM2YwODVvNnFjMkdodEVRZWlpVWlsM3EwaHRhRFAxXG4yYjVwdzFlQlJFekRyU2M5MGtuYjRaRUNJK2tPUG9wNzlJK25hNzRoMWNiSW95YnhueGVNOElJb2s0cmZpemlNXG53UzR2WGhxbkVpbTR1NEl0M29qUHNVS1N1UnV0OEhmd0t3MlRTcjlWOWRwV1wvdStsenlEZmpUemd0dG83UXRQRlxub1wvMExRRHE4b1ZSa0ZxYUNKUDhEdzYwQ0F3RUFBUT09XG4tLS0tLUVORCBQVUJMSUMgS0VZLS0tLS1cbiJ9')
+                }
+            } else {
+                if (current.type === 'microsoft') {
+                    args.push('-Xdock:name=HastaStudioslauncher')
+                    args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
+                    args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
+                    args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
+                    args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
+                } else {
+                    args.push('-Xdock:name=HastaStudioslauncher')
+                    args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
+                    args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
+                    args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
+                    args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
+                    args.push('-Duser.language=es')
+                    args.push('-Dminecraft.api.env=custom')
+                    args.push('-Dminecraft.api.auth.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/authserver')
+                    args.push('-Dminecraft.api.account.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/api')
+                    args.push('-Dminecraft.api.session.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/sessionserver')
+                    args.push('-Dminecraft.api.services.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/minecraftservices')
+                    // args.push(`-javaagent:${path.join(appPath, 'Contents', 'Resources', 'libraries', 'java', 'HastaAuth.jar')}=https://auth.zelthoriaismp.cloud/api/yggdrasil`)
+                    // args.push('-Dauthlibinjector.yggdrasil.prefetched=eyJtZXRhIjp7InNlcnZlck5hbWUiOiJaZWx0aG9yaWFpIFNNUCIsImltcGxlbWVudGF0aW9uTmFtZSI6IllnZ2RyYXNpbCBBUEkgZm9yIEJsZXNzaW5nIFNraW4iLCJpbXBsZW1lbnRhdGlvblZlcnNpb24iOiI1LjIuMSIsImxpbmtzIjp7ImhvbWVwYWdlIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZCIsInJlZ2lzdGVyIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZFwvYXV0aFwvcmVnaXN0ZXIifSwiZmVhdHVyZS5ub25fZW1haWxfbG9naW4iOnRydWV9LCJza2luRG9tYWlucyI6WyJhdXRoLnplbHRob3JpYWlzbXAuY2xvdWQiXSwic2lnbmF0dXJlUHVibGlja2V5IjoiLS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS1cbk1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBeUJpT3NQajVJd043NldXNGFWeldcblJXdVZKaVpHRUl6eWdzRGYyTWtXQ2xQbVk5S1FQM3RTYVJyK3FsZUhCRU9KMWhnZjNwbUJ5OFVuWjFNV3FJeU9cbkY5cTM1Rk4wV3hrVExQTVZLWkl3dkxZRk9GMUZwNWJheDZQRmhRbUJpU2xYelwvcHA1QmQyOHlrVkJOMWFUM1FQXG5zN0I3TDAxWnFxZlZNYzJNcHB0TUNpYmhsTU9xajFFcjVDdWwxSWJzYlJkbjdFOWl5QzVmdEZkR1BDK0F1OHpSXG5YWHhCdm1zbXZBSmliQmQzZU02dlBHRjJBNkxRbURIOHpGUU1NTlhUQWw3VG1PVjNmczR0Vmw0YThQNVJnSXFqXG5GM0JWVzNvYjlNTHJDTGs0MUpUTkZkYWthYjZCWlJSYjg2NndNN3UxXC9IcnlweU9idnV4NytKb3R6MnpMcFUzeFxuY25rZEZqQzFvYnZKd3pOQkhSXC8yc2hubWlmZ2RHZGRKbnVrN1hjRGkzeDh5cGJYcVNXQkJoZGxMRGc0emFYVjBcblhTa29YUUt2MTAzbUVTcVlUMEh5RjFwNzc2WnJJVnczR0R2c3BhRGxzYU13d01JRlFkN0toSitsMjl4clR0NEhcbjZtQWlVeGtNd1wvWEI4am82djc0ZklHcjZ5ZUZzTkFGTTBpM2YwODVvNnFjMkdodEVRZWlpVWlsM3EwaHRhRFAxXG4yYjVwdzFlQlJFekRyU2M5MGtuYjRaRUNJK2tPUG9wNzlJK25hNzRoMWNiSW95YnhueGVNOElJb2s0cmZpemlNXG53UzR2WGhxbkVpbTR1NEl0M29qUHNVS1N1UnV0OEhmd0t3MlRTcjlWOWRwV1wvdStsenlEZmpUemd0dG83UXRQRlxub1wvMExRRHE4b1ZSa0ZxYUNKUDhEdzYwQ0F3RUFBUT09XG4tLS0tLUVORCBQVUJMSUMgS0VZLS0tLS1cbiJ9')
+                }
+            }
+        }
+
+        const current = ConfigManager.getSelectedAccount()
+        
+        // eslint-disable-next-line no-undef
+        if(isDev){
             if (current.type === 'microsoft') {
-                args.push('-Xdock:name=HastaStudioslauncher')
-                args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
                 args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
                 args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
                 args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
             } else {
-            args.push('-Xdock:name=HastaStudioslauncher')
-            args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
-            args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
-            args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
-            args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
-            args.push('-Duser.language=es')
-            args.push('-Dminecraft.api.env=custom')
-            args.push('-Dminecraft.api.auth.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/authserver')
-            args.push('-Dminecraft.api.account.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/api')
-            args.push('-Dminecraft.api.session.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/sessionserver')
-            args.push('-Dminecraft.api.services.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/minecraftservices')
-        //    args.push(`-javaagent:${path.join(process.cwd(), 'libraries', 'java', 'HastaAuth.jar')}=https://auth.zelthoriaismp.cloud/api/yggdrasil`)
-        //    args.push('-Dauthlibinjector.yggdrasil.prefetched=eyJtZXRhIjp7InNlcnZlck5hbWUiOiJaZWx0aG9yaWFpIFNNUCIsImltcGxlbWVudGF0aW9uTmFtZSI6IllnZ2RyYXNpbCBBUEkgZm9yIEJsZXNzaW5nIFNraW4iLCJpbXBsZW1lbnRhdGlvblZlcnNpb24iOiI1LjIuMSIsImxpbmtzIjp7ImhvbWVwYWdlIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZCIsInJlZ2lzdGVyIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZFwvYXV0aFwvcmVnaXN0ZXIifSwiZmVhdHVyZS5ub25fZW1haWxfbG9naW4iOnRydWV9LCJza2luRG9tYWlucyI6WyJhdXRoLnplbHRob3JpYWlzbXAuY2xvdWQiXSwic2lnbmF0dXJlUHVibGlja2V5IjoiLS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS1cbk1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBeUJpT3NQajVJd043NldXNGFWeldcblJXdVZKaVpHRUl6eWdzRGYyTWtXQ2xQbVk5S1FQM3RTYVJyK3FsZUhCRU9KMWhnZjNwbUJ5OFVuWjFNV3FJeU9cbkY5cTM1Rk4wV3hrVExQTVZLWkl3dkxZRk9GMUZwNWJheDZQRmhRbUJpU2xYelwvcHA1QmQyOHlrVkJOMWFUM1FQXG5zN0I3TDAxWnFxZlZNYzJNcHB0TUNpYmhsTU9xajFFcjVDdWwxSWJzYlJkbjdFOWl5QzVmdEZkR1BDK0F1OHpSXG5YWHhCdm1zbXZBSmliQmQzZU02dlBHRjJBNkxRbURIOHpGUU1NTlhUQWw3VG1PVjNmczR0Vmw0YThQNVJnSXFqXG5GM0JWVzNvYjlNTHJDTGs0MUpUTkZkYWthYjZCWlJSYjg2NndNN3UxXC9IcnlweU9idnV4NytKb3R6MnpMcFUzeFxuY25rZEZqQzFvYnZKd3pOQkhSXC8yc2hubWlmZ2RHZGRKbnVrN1hjRGkzeDh5cGJYcVNXQkJoZGxMRGc0emFYVjBcblhTa29YUUt2MTAzbUVTcVlUMEh5RjFwNzc2WnJJVnczR0R2c3BhRGxzYU13d01JRlFkN0toSitsMjl4clR0NEhcbjZtQWlVeGtNd1wvWEI4am82djc0ZklHcjZ5ZUZzTkFGTTBpM2YwODVvNnFjMkdodEVRZWlpVWlsM3EwaHRhRFAxXG4yYjVwdzFlQlJFekRyU2M5MGtuYjRaRUNJK2tPUG9wNzlJK25hNzRoMWNiSW95YnhueGVNOElJb2s0cmZpemlNXG53UzR2WGhxbkVpbTR1NEl0M29qUHNVS1N1UnV0OEhmd0t3MlRTcjlWOWRwV1wvdStsenlEZmpUemd0dG83UXRQRlxub1wvMExRRHE4b1ZSa0ZxYUNKUDhEdzYwQ0F3RUFBUT09XG4tLS0tLUVORCBQVUJMSUMgS0VZLS0tLS1cbiJ9')
-        }
-    } else {
-        if (current.type === 'microsoft') {
-            args.push('-Xdock:name=HastaStudioslauncher')
-            args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
-            args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
-            args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
-            args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
-        } else {
-        args.push('-Xdock:name=HastaStudioslauncher')
-        args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
-        args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
-        args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
-        args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
-        args.push('-Duser.language=es')
-        args.push('-Dminecraft.api.env=custom')
-        args.push('-Dminecraft.api.auth.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/authserver')
-        args.push('-Dminecraft.api.account.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/api')
-        args.push('-Dminecraft.api.session.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/sessionserver')
-        args.push('-Dminecraft.api.services.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/minecraftservices')
-       // args.push(`-javaagent:${path.join(appPath, 'Contents', 'Resources', 'libraries', 'java', 'HastaAuth.jar')}=https://auth.zelthoriaismp.cloud/api/yggdrasil`)
-       // args.push('-Dauthlibinjector.yggdrasil.prefetched=eyJtZXRhIjp7InNlcnZlck5hbWUiOiJaZWx0aG9yaWFpIFNNUCIsImltcGxlbWVudGF0aW9uTmFtZSI6IllnZ2RyYXNpbCBBUEkgZm9yIEJsZXNzaW5nIFNraW4iLCJpbXBsZW1lbnRhdGlvblZlcnNpb24iOiI1LjIuMSIsImxpbmtzIjp7ImhvbWVwYWdlIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZCIsInJlZ2lzdGVyIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZFwvYXV0aFwvcmVnaXN0ZXIifSwiZmVhdHVyZS5ub25fZW1haWxfbG9naW4iOnRydWV9LCJza2luRG9tYWlucyI6WyJhdXRoLnplbHRob3JpYWlzbXAuY2xvdWQiXSwic2lnbmF0dXJlUHVibGlja2V5IjoiLS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS1cbk1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBeUJpT3NQajVJd043NldXNGFWeldcblJXdVZKaVpHRUl6eWdzRGYyTWtXQ2xQbVk5S1FQM3RTYVJyK3FsZUhCRU9KMWhnZjNwbUJ5OFVuWjFNV3FJeU9cbkY5cTM1Rk4wV3hrVExQTVZLWkl3dkxZRk9GMUZwNWJheDZQRmhRbUJpU2xYelwvcHA1QmQyOHlrVkJOMWFUM1FQXG5zN0I3TDAxWnFxZlZNYzJNcHB0TUNpYmhsTU9xajFFcjVDdWwxSWJzYlJkbjdFOWl5QzVmdEZkR1BDK0F1OHpSXG5YWHhCdm1zbXZBSmliQmQzZU02dlBHRjJBNkxRbURIOHpGUU1NTlhUQWw3VG1PVjNmczR0Vmw0YThQNVJnSXFqXG5GM0JWVzNvYjlNTHJDTGs0MUpUTkZkYWthYjZCWlJSYjg2NndNN3UxXC9IcnlweU9idnV4NytKb3R6MnpMcFUzeFxuY25rZEZqQzFvYnZKd3pOQkhSXC8yc2hubWlmZ2RHZGRKbnVrN1hjRGkzeDh5cGJYcVNXQkJoZGxMRGc0emFYVjBcblhTa29YUUt2MTAzbUVTcVlUMEh5RjFwNzc2WnJJVnczR0R2c3BhRGxzYU13d01JRlFkN0toSitsMjl4clR0NEhcbjZtQWlVeGtNd1wvWEI4am82djc0ZklHcjZ5ZUZzTkFGTTBpM2YwODVvNnFjMkdodEVRZWlpVWlsM3EwaHRhRFAxXG4yYjVwdzFlQlJFekRyU2M5MGtuYjRaRUNJK2tPUG9wNzlJK25hNzRoMWNiSW95YnhueGVNOElJb2s0cmZpemlNXG53UzR2WGhxbkVpbTR1NEl0M29qUHNVS1N1UnV0OEhmd0t3MlRTcjlWOWRwV1wvdStsenlEZmpUemd0dG83UXRQRlxub1wvMExRRHE4b1ZSa0ZxYUNKUDhEdzYwQ0F3RUFBUT09XG4tLS0tLUVORCBQVUJMSUMgS0VZLS0tLS1cbiJ9')
-        }
-    }
-}
-
-        const current = ConfigManager.getSelectedAccount()
-        
-        if(isDev){
-            if (current.type === 'microsoft') {
-            args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
-            args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
-            args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
-            } else {
                 args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
-            args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
-            args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
-        args.push('-Duser.language=es')
-        args.push('-Dminecraft.api.env=custom')
-        args.push('-Dminecraft.api.auth.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/authserver')
-        args.push('-Dminecraft.api.account.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/api')
-        args.push('-Dminecraft.api.session.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/sessionserver')
-        args.push('-Dminecraft.api.services.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/minecraftservices')
-       // args.push(`-javaagent:${path.join(process.cwd(), 'libraries', 'java', 'HastaAuth.jar')}=https://auth.zelthoriaismp.cloud/api/yggdrasil`)
-        //args.push('-Dauthlibinjector.yggdrasil.prefetched=eyJtZXRhIjp7InNlcnZlck5hbWUiOiJaZWx0aG9yaWFpIFNNUCIsImltcGxlbWVudGF0aW9uTmFtZSI6IllnZ2RyYXNpbCBBUEkgZm9yIEJsZXNzaW5nIFNraW4iLCJpbXBsZW1lbnRhdGlvblZlcnNpb24iOiI1LjIuMSIsImxpbmtzIjp7ImhvbWVwYWdlIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZCIsInJlZ2lzdGVyIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZFwvYXV0aFwvcmVnaXN0ZXIifSwiZmVhdHVyZS5ub25fZW1haWxfbG9naW4iOnRydWV9LCJza2luRG9tYWlucyI6WyJhdXRoLnplbHRob3JpYWlzbXAuY2xvdWQiXSwic2lnbmF0dXJlUHVibGlja2V5IjoiLS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS1cbk1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBeUJpT3NQajVJd043NldXNGFWeldcblJXdVZKaVpHRUl6eWdzRGYyTWtXQ2xQbVk5S1FQM3RTYVJyK3FsZUhCRU9KMWhnZjNwbUJ5OFVuWjFNV3FJeU9cbkY5cTM1Rk4wV3hrVExQTVZLWkl3dkxZRk9GMUZwNWJheDZQRmhRbUJpU2xYelwvcHA1QmQyOHlrVkJOMWFUM1FQXG5zN0I3TDAxWnFxZlZNYzJNcHB0TUNpYmhsTU9xajFFcjVDdWwxSWJzYlJkbjdFOWl5QzVmdEZkR1BDK0F1OHpSXG5YWHhCdm1zbXZBSmliQmQzZU02dlBHRjJBNkxRbURIOHpGUU1NTlhUQWw3VG1PVjNmczR0Vmw0YThQNVJnSXFqXG5GM0JWVzNvYjlNTHJDTGs0MUpUTkZkYWthYjZCWlJSYjg2NndNN3UxXC9IcnlweU9idnV4NytKb3R6MnpMcFUzeFxuY25rZEZqQzFvYnZKd3pOQkhSXC8yc2hubWlmZ2RHZGRKbnVrN1hjRGkzeDh5cGJYcVNXQkJoZGxMRGc0emFYVjBcblhTa29YUUt2MTAzbUVTcVlUMEh5RjFwNzc2WnJJVnczR0R2c3BhRGxzYU13d01JRlFkN0toSitsMjl4clR0NEhcbjZtQWlVeGtNd1wvWEI4am82djc0ZklHcjZ5ZUZzTkFGTTBpM2YwODVvNnFjMkdodEVRZWlpVWlsM3EwaHRhRFAxXG4yYjVwdzFlQlJFekRyU2M5MGtuYjRaRUNJK2tPUG9wNzlJK25hNzRoMWNiSW95YnhueGVNOElJb2s0cmZpemlNXG53UzR2WGhxbkVpbTR1NEl0M29qUHNVS1N1UnV0OEhmd0t3MlRTcjlWOWRwV1wvdStsenlEZmpUemd0dG83UXRQRlxub1wvMExRRHE4b1ZSa0ZxYUNKUDhEdzYwQ0F3RUFBUT09XG4tLS0tLUVORCBQVUJMSUMgS0VZLS0tLS1cbiJ9')
+                args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
+                args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
+                args.push('-Duser.language=es')
+                args.push('-Dminecraft.api.env=custom')
+                args.push('-Dminecraft.api.auth.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/authserver')
+                args.push('-Dminecraft.api.account.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/api')
+                args.push('-Dminecraft.api.session.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/sessionserver')
+                args.push('-Dminecraft.api.services.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/minecraftservices')
+                // args.push(`-javaagent:${path.join(process.cwd(), 'libraries', 'java', 'HastaAuth.jar')}=https://auth.zelthoriaismp.cloud/api/yggdrasil`)
+                //args.push('-Dauthlibinjector.yggdrasil.prefetched=eyJtZXRhIjp7InNlcnZlck5hbWUiOiJaZWx0aG9yaWFpIFNNUCIsImltcGxlbWVudGF0aW9uTmFtZSI6IllnZ2RyYXNpbCBBUEkgZm9yIEJsZXNzaW5nIFNraW4iLCJpbXBsZW1lbnRhdGlvblZlcnNpb24iOiI1LjIuMSIsImxpbmtzIjp7ImhvbWVwYWdlIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZCIsInJlZ2lzdGVyIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZFwvYXV0aFwvcmVnaXN0ZXIifSwiZmVhdHVyZS5ub25fZW1haWxfbG9naW4iOnRydWV9LCJza2luRG9tYWlucyI6WyJhdXRoLnplbHRob3JpYWlzbXAuY2xvdWQiXSwic2lnbmF0dXJlUHVibGlja2V5IjoiLS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS1cbk1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBeUJpT3NQajVJd043NldXNGFWeldcblJXdVZKaVpHRUl6eWdzRGYyTWtXQ2xQbVk5S1FQM3RTYVJyK3FsZUhCRU9KMWhnZjNwbUJ5OFVuWjFNV3FJeU9cbkY5cTM1Rk4wV3hrVExQTVZLWkl3dkxZRk9GMUZwNWJheDZQRmhRbUJpU2xYelwvcHA1QmQyOHlrVkJOMWFUM1FQXG5zN0I3TDAxWnFxZlZNYzJNcHB0TUNpYmhsTU9xajFFcjVDdWwxSWJzYlJkbjdFOWl5QzVmdEZkR1BDK0F1OHpSXG5YWHhCdm1zbXZBSmliQmQzZU02dlBHRjJBNkxRbURIOHpGUU1NTlhUQWw3VG1PVjNmczR0Vmw0YThQNVJnSXFqXG5GM0JWVzNvYjlNTHJDTGs0MUpUTkZkYWthYjZCWlJSYjg2NndNN3UxXC9IcnlweU9idnV4NytKb3R6MnpMcFUzeFxuY25rZEZqQzFvYnZKd3pOQkhSXC8yc2hubWlmZ2RHZGRKbnVrN1hjRGkzeDh5cGJYcVNXQkJoZGxMRGc0emFYVjBcblhTa29YUUt2MTAzbUVTcVlUMEh5RjFwNzc2WnJJVnczR0R2c3BhRGxzYU13d01JRlFkN0toSitsMjl4clR0NEhcbjZtQWlVeGtNd1wvWEI4am82djc0ZklHcjZ5ZUZzTkFGTTBpM2YwODVvNnFjMkdodEVRZWlpVWlsM3EwaHRhRFAxXG4yYjVwdzFlQlJFekRyU2M5MGtuYjRaRUNJK2tPUG9wNzlJK25hNzRoMWNiSW95YnhueGVNOElJb2s0cmZpemlNXG53UzR2WGhxbkVpbTR1NEl0M29qUHNVS1N1UnV0OEhmd0t3MlRTcjlWOWRwV1wvdStsenlEZmpUemd0dG83UXRQRlxub1wvMExRRHE4b1ZSa0ZxYUNKUDhEdzYwQ0F3RUFBUT09XG4tLS0tLUVORCBQVUJMSUMgS0VZLS0tLS1cbiJ9')
             }
         } else {
-        if (current.type === 'microsoft') {
-            args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
-            args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
-            args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
-        } else {
-            args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
-            args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
-            args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
-        args.push('-Duser.language=es')
-        args.push('-Dminecraft.api.env=custom')
-        args.push('-Dminecraft.api.auth.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/authserver')
-        args.push('-Dminecraft.api.account.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/api')
-        args.push('-Dminecraft.api.session.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/sessionserver')
-        args.push('-Dminecraft.api.services.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/minecraftservices')
-       // args.push(`-javaagent:${path.join(process.cwd(),'resources', 'libraries', 'java', 'HastaAuth.jar')}=https://auth.zelthoriaismp.cloud/api/yggdrasil`)
-        //args.push('-Dauthlibinjector.yggdrasil.prefetched=eyJtZXRhIjp7InNlcnZlck5hbWUiOiJaZWx0aG9yaWFpIFNNUCIsImltcGxlbWVudGF0aW9uTmFtZSI6IllnZ2RyYXNpbCBBUEkgZm9yIEJsZXNzaW5nIFNraW4iLCJpbXBsZW1lbnRhdGlvblZlcnNpb24iOiI1LjIuMSIsImxpbmtzIjp7ImhvbWVwYWdlIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZCIsInJlZ2lzdGVyIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZFwvYXV0aFwvcmVnaXN0ZXIifSwiZmVhdHVyZS5ub25fZW1haWxfbG9naW4iOnRydWV9LCJza2luRG9tYWlucyI6WyJhdXRoLnplbHRob3JpYWlzbXAuY2xvdWQiXSwic2lnbmF0dXJlUHVibGlja2V5IjoiLS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS1cbk1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBeUJpT3NQajVJd043NldXNGFWeldcblJXdVZKaVpHRUl6eWdzRGYyTWtXQ2xQbVk5S1FQM3RTYVJyK3FsZUhCRU9KMWhnZjNwbUJ5OFVuWjFNV3FJeU9cbkY5cTM1Rk4wV3hrVExQTVZLWkl3dkxZRk9GMUZwNWJheDZQRmhRbUJpU2xYelwvcHA1QmQyOHlrVkJOMWFUM1FQXG5zN0I3TDAxWnFxZlZNYzJNcHB0TUNpYmhsTU9xajFFcjVDdWwxSWJzYlJkbjdFOWl5QzVmdEZkR1BDK0F1OHpSXG5YWHhCdm1zbXZBSmliQmQzZU02dlBHRjJBNkxRbURIOHpGUU1NTlhUQWw3VG1PVjNmczR0Vmw0YThQNVJnSXFqXG5GM0JWVzNvYjlNTHJDTGs0MUpUTkZkYWthYjZCWlJSYjg2NndNN3UxXC9IcnlweU9idnV4NytKb3R6MnpMcFUzeFxuY25rZEZqQzFvYnZKd3pOQkhSXC8yc2hubWlmZ2RHZGRKbnVrN1hjRGkzeDh5cGJYcVNXQkJoZGxMRGc0emFYVjBcblhTa29YUUt2MTAzbUVTcVlUMEh5RjFwNzc2WnJJVnczR0R2c3BhRGxzYU13d01JRlFkN0toSitsMjl4clR0NEhcbjZtQWlVeGtNd1wvWEI4am82djc0ZklHcjZ5ZUZzTkFGTTBpM2YwODVvNnFjMkdodEVRZWlpVWlsM3EwaHRhRFAxXG4yYjVwdzFlQlJFekRyU2M5MGtuYjRaRUNJK2tPUG9wNzlJK25hNzRoMWNiSW95YnhueGVNOElJb2s0cmZpemlNXG53UzR2WGhxbkVpbTR1NEl0M29qUHNVS1N1UnV0OEhmd0t3MlRTcjlWOWRwV1wvdStsenlEZmpUemd0dG83UXRQRlxub1wvMExRRHE4b1ZSa0ZxYUNKUDhEdzYwQ0F3RUFBUT09XG4tLS0tLUVORCBQVUJMSUMgS0VZLS0tLS1cbiJ9')
+            if (current.type === 'microsoft') {
+                args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
+                args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
+                args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
+            } else {
+                args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
+                args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
+                args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
+                args.push('-Duser.language=es')
+                args.push('-Dminecraft.api.env=custom')
+                args.push('-Dminecraft.api.auth.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/authserver')
+                args.push('-Dminecraft.api.account.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/api')
+                args.push('-Dminecraft.api.session.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/sessionserver')
+                args.push('-Dminecraft.api.services.host=https://auth.zelthoriaismp.cloud/api/yggdrasil/minecraftservices')
+                // args.push(`-javaagent:${path.join(process.cwd(),'resources', 'libraries', 'java', 'HastaAuth.jar')}=https://auth.zelthoriaismp.cloud/api/yggdrasil`)
+                //args.push('-Dauthlibinjector.yggdrasil.prefetched=eyJtZXRhIjp7InNlcnZlck5hbWUiOiJaZWx0aG9yaWFpIFNNUCIsImltcGxlbWVudGF0aW9uTmFtZSI6IllnZ2RyYXNpbCBBUEkgZm9yIEJsZXNzaW5nIFNraW4iLCJpbXBsZW1lbnRhdGlvblZlcnNpb24iOiI1LjIuMSIsImxpbmtzIjp7ImhvbWVwYWdlIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZCIsInJlZ2lzdGVyIjoiaHR0cHM6XC9cL2F1dGguemVsdGhvcmlhaXNtcC5jbG91ZFwvYXV0aFwvcmVnaXN0ZXIifSwiZmVhdHVyZS5ub25fZW1haWxfbG9naW4iOnRydWV9LCJza2luRG9tYWlucyI6WyJhdXRoLnplbHRob3JpYWlzbXAuY2xvdWQiXSwic2lnbmF0dXJlUHVibGlja2V5IjoiLS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS1cbk1JSUNJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBZzhBTUlJQ0NnS0NBZ0VBeUJpT3NQajVJd043NldXNGFWeldcblJXdVZKaVpHRUl6eWdzRGYyTWtXQ2xQbVk5S1FQM3RTYVJyK3FsZUhCRU9KMWhnZjNwbUJ5OFVuWjFNV3FJeU9cbkY5cTM1Rk4wV3hrVExQTVZLWkl3dkxZRk9GMUZwNWJheDZQRmhRbUJpU2xYelwvcHA1QmQyOHlrVkJOMWFUM1FQXG5zN0I3TDAxWnFxZlZNYzJNcHB0TUNpYmhsTU9xajFFcjVDdWwxSWJzYlJkbjdFOWl5QzVmdEZkR1BDK0F1OHpSXG5YWHhCdm1zbXZBSmliQmQzZU02dlBHRjJBNkxRbURIOHpGUU1NTlhUQWw3VG1PVjNmczR0Vmw0YThQNVJnSXFqXG5GM0JWVzNvYjlNTHJDTGs0MUpUTkZkYWthYjZCWlJSYjg2NndNN3UxXC9IcnlweU9idnV4NytKb3R6MnpMcFUzeFxuY25rZEZqQzFvYnZKd3pOQkhSXC8yc2hubWlmZ2RHZGRKbnVrN1hjRGkzeDh5cGJYcVNXQkJoZGxMRGc0emFYVjBcblhTa29YUUt2MTAzbUVTcVlUMEh5RjFwNzc2WnJJVnczR0R2c3BhRGxzYU13d01JRlFkN0toSitsMjl4clR0NEhcbjZtQWlVeGtNd1wvWEI4am82djc0ZklHcjZ5ZUZzTkFGTTBpM2YwODVvNnFjMkdodEVRZWlpVWlsM3EwaHRhRFAxXG4yYjVwdzFlQlJFekRyU2M5MGtuYjRaRUNJK2tPUG9wNzlJK25hNzRoMWNiSW95YnhueGVNOElJb2s0cmZpemlNXG53UzR2WGhxbkVpbTR1NEl0M29qUHNVS1N1UnV0OEhmd0t3MlRTcjlWOWRwV1wvdStsenlEZmpUemd0dG83UXRQRlxub1wvMExRRHE4b1ZSa0ZxYUNKUDhEdzYwQ0F3RUFBUT09XG4tLS0tLUVORCBQVUJMSUMgS0VZLS0tLS1cbiJ9')
+            }
         }
-    }
 
         // Main Java Class
         args.push(this.modManifest.mainClass)

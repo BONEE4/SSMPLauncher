@@ -1,8 +1,8 @@
-appId: 'HastaStudiosLauncher'
-productName: 'Hasta Studios Launcher'
+appId: 'VLMP Launcher'
+productName: 'VLMP Launcher'
 artifactName: '${productName}-setup-${version}.${ext}'
 
-copyright: 'Copyright © 2018-2024 Shisuys'
+copyright: 'Copyright © 2025-2025 BONEE'
 
 asar: true
 compression: 'maximum'
@@ -40,10 +40,10 @@ mac:
 # Linux Configuration
 linux: 
   target: 'AppImage'
-  maintainer: 'Shisuys'
-  vendor: 'Shisuys'
-  synopsis: 'Hasta Studios Minecraft Launcher'
-  description: 'Oficial Laucnher For All Hasta Studios And ZSMP Projects'
+  maintainer: 'BONEE'
+  vendor: 'BONEE'
+  synopsis: 'VLMP Launcherr'
+  description: 'Oficial Laucnher VLMP minecraft server'
   category: 'Game'
 
 

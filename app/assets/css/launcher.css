@@ -505,7 +505,7 @@ button {
 }
 
 #loginForm {
-    height: 70vh;
+    height: 50vh;
     width: 350px;
     background-color: #121212ad;
     border-radius: 3%;
@@ -3208,7 +3208,7 @@ input:checked+.toggleSwitchSlider:before {
     letter-spacing: 1px;
     text-shadow: 0px 0px 20px black;
     position: absolute;
-    bottom: -25px; /* Ajuste conforme necessário */
+    bottom: -25px; /* Ajuste conforme necessï¿½rio */
     left: 50%; /* Posiciona o texto centralizado horizontalmente */
     transform: translateX(-50%); /* Ajuste para centralizar o texto */
     -webkit-user-select: initial;

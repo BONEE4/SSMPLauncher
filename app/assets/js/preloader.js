@@ -68,5 +68,5 @@ fs.remove(path.join(os.tmpdir(), ConfigManager.getTempNativeFolder()), (err) => 
 })
 
 //reload username
-ConfigManager.reloadUsername();
-setInterval(ConfigManager.reloadUsername, 60*1000)
+ConfigManager.reloadUsername()
+setInterval(ConfigManager.reloadUsername, 60 * 1000)

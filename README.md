@@ -1,13 +1,13 @@
 
 <img src="https://zelthoriaismp.cloud/Launcher/assets/logo.png" alt="Logo" width="450">
 
-# Hasta Studios Launcher
+# VLMP Launcher
 
-A cracked fork of helios launcher.
+A cracked fork of helios launcher and Zelthorian SMP.
 
-![Launcher Screenshot](https://zelthoriaismp.cloud/launcher2.png)
-
-![Launcher Screenshot 2](https://zelthoriaismp.cloud/launcher1.png)
+All credits to:
+[Helius launcher](https://github.com/dscalzi/HeliosLauncher)
+[Shisuiicaro](https://github.com/Shisuiicaro/Craked-Helios-Launcher)
 
 ## Features
 
@@ -20,5 +20,3 @@ A cracked fork of helios launcher.
   - Microsoft (OAuth 2.0) and custom authentication server fully supported.
   - Offline account support (cracked)
   - Credentials are never stored and transmitted directly to Hasta Studios or Microsoft.
-
-

@@ -13,7 +13,7 @@ const loginButton           = document.getElementById('loginButton')
 const loginForm             = document.getElementById('loginForm')
 
 // Control variable.
-let lu = false;
+let lu = false
 
 /**
  * Show a login error.
@@ -22,8 +22,8 @@ let lu = false;
  * @param {string} value The error text.
  */
 function showError(element, value){
-    element.innerHTML = value;
-    element.style.opacity = 1;
+    element.innerHTML = value
+    element.style.opacity = 1
 }
 
 /**
@@ -33,9 +33,9 @@ function showError(element, value){
  */
 function shakeError(element){
     if(element.style.opacity == 1){
-        element.classList.remove('shake');
-        void element.offsetWidth;
-        element.classList.add('shake');
+        element.classList.remove('shake')
+        void element.offsetWidth
+        element.classList.add('shake')
     }
 }
 
@@ -45,33 +45,33 @@ function shakeError(element){
  * @param {string} value The email value.
  */
 function validateEmail(value) {
-    var usernameRegex = /^[a-zA-Z0-9_]{4,}$/;
+    let usernameRegex = /^[a-zA-Z0-9_]{4,}$/
 
     if (usernameRegex.test(value)) {
-        loginEmailError.style.opacity = 0;
-        lu = true;
+        loginEmailError.style.opacity = 0
+        lu = true
     } else {
-        showError(loginEmailError, Lang.queryJS('login.error.invalidValue'));
-        lu = false;
+        showError(loginEmailError, Lang.queryJS('login.error.invalidValue'))
+        lu = false
     }
 
-    checkLoginButtonEnabled(); 
+    checkLoginButtonEnabled() 
 }
 
 function checkLoginButtonEnabled() {
-    loginButton.disabled = !lu;
+    loginButton.disabled = !lu
 }
 
 // Emphasize errors with shake when focus is lost.
 loginUsername.addEventListener('focusout', (e) => {
-    validateEmail(e.target.value);
-    shakeError(loginEmailError);
-});
+    validateEmail(e.target.value)
+    shakeError(loginEmailError)
+})
 
 // Validate input for email field.
 loginUsername.addEventListener('input', (e) => {
-    validateEmail(e.target.value);
-});
+    validateEmail(e.target.value)
+})
 
 /**
  * Enable or disable loading elements.
@@ -80,11 +80,11 @@ loginUsername.addEventListener('input', (e) => {
  */
 function loginLoading(v){
     if(v){
-        loginButton.setAttribute('loading', v);
-        loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.login'), Lang.queryJS('login.loggingIn'));
+        loginButton.setAttribute('loading', v)
+        loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.login'), Lang.queryJS('login.loggingIn'))
     } else {
-        loginButton.removeAttribute('loading');
-        loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.loggingIn'), Lang.queryJS('login.login'));
+        loginButton.removeAttribute('loading')
+        loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.loggingIn'), Lang.queryJS('login.login'))
     }
 }
 
@@ -94,93 +94,93 @@ function loginLoading(v){
  * @param {boolean} v True to enable, false to disable.
  */
 function formDisabled(v){
-    loginCancelButton.disabled = v;
-    loginUsername.disabled = v;
+    loginCancelButton.disabled = v
+    loginUsername.disabled = v
     if(v){
-        checkmarkContainer.setAttribute('disabled', v);
+        checkmarkContainer.setAttribute('disabled', v)
     } else {
-        checkmarkContainer.removeAttribute('disabled');
+        checkmarkContainer.removeAttribute('disabled')
     }
-    loginRememberOption.disabled = v;
+    loginRememberOption.disabled = v
 }
 
-let loginViewOnSuccess = VIEWS.landing;
-let loginViewOnCancel = VIEWS.settings;
-let loginViewCancelHandler;
+let loginViewOnSuccess = VIEWS.landing
+let loginViewOnCancel = VIEWS.settings
+let loginViewCancelHandler
 
 function loginCancelEnabled(val){
     if(val){
-        $(loginCancelContainer).show();
+        $(loginCancelContainer).show()
     } else {
-        $(loginCancelContainer).hide();
+        $(loginCancelContainer).hide()
     }
 }
 
 loginCancelButton.onclick = (e) => {
     switchView(getCurrentView(), loginViewOnCancel, 500, 500, () => {
-        loginUsername.value = '';
-        loginCancelEnabled(false);
+        loginUsername.value = ''
+        loginCancelEnabled(false)
         if(loginViewCancelHandler != null){
-            loginViewCancelHandler();
-            loginViewCancelHandler = null;
+            loginViewCancelHandler()
+            loginViewCancelHandler = null
         }
-    });
-};
+    })
+}
 
 // Disable default form behavior.
-loginForm.onsubmit = () => { return false; };
+loginForm.onsubmit = () => { return false }
 
 // Bind login button behavior.
 loginButton.addEventListener('click', () => {
     // Disable form.
-    formDisabled(true);
+    formDisabled(true)
 
     // Show loading stuff.
-    loginLoading(true);
+    loginLoading(true)
 
     AuthManager.addAccount(loginUsername.value).then((value) => {
-        updateSelectedAccount(value);
-        loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.loggingIn'), Lang.queryJS('login.success'));
-        $('.circle-loader').toggleClass('load-complete');
-        $('.checkmark').toggle();
+        updateSelectedAccount(value)
+        loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.loggingIn'), Lang.queryJS('login.success'))
+        $('.circle-loader').toggleClass('load-complete')
+        $('.checkmark').toggle()
         setTimeout(() => {
             switchView(VIEWS.login, loginViewOnSuccess, 500, 500, async () => {
                 if(loginViewOnSuccess === VIEWS.settings){
-                    await prepareSettings();
+                    await prepareSettings()
                 }
-                loginViewOnSuccess = VIEWS.landing; // Reset this for good measure.
-                loginCancelEnabled(false); // Reset this for good measure.
-                loginViewCancelHandler = null; // Reset this for good measure.
-                loginUsername.value = '';
-                $('.circle-loader').toggleClass('load-complete');
-                $('.checkmark').toggle();
-                loginLoading(false);
-                loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.success'), Lang.queryJS('login.login'));
-                formDisabled(false);
-                lu = false;
-                checkLoginButtonEnabled();
-            });
-        }, 1000);
+                loginViewOnSuccess = VIEWS.landing // Reset this for good measure.
+                loginCancelEnabled(false) // Reset this for good measure.
+                loginViewCancelHandler = null // Reset this for good measure.
+                loginUsername.value = ''
+                $('.circle-loader').toggleClass('load-complete')
+                $('.checkmark').toggle()
+                loginLoading(false)
+                loginButton.innerHTML = loginButton.innerHTML.replace(Lang.queryJS('login.success'), Lang.queryJS('login.login'))
+                formDisabled(false)
+                lu = false
+                checkLoginButtonEnabled()
+            })
+        }, 1000)
     }).catch((displayableError) => {
-        loginLoading(false);
+        loginLoading(false)
 
-        let actualDisplayableError;
+        let actualDisplayableError
         if(isDisplayableError(displayableError)) {
-            msftLoginLogger.error('Error while logging in.', displayableError);
-            actualDisplayableError = displayableError;
+            msftLoginLogger.error('Error while logging in.', displayableError)
+            actualDisplayableError = displayableError
         } else {
             // Uh oh.
-            msftLoginLogger.error('Unhandled error during login.', displayableError);
-            actualDisplayableError = Lang.queryJS('login.error.unknown');
+            msftLoginLogger.error('Unhandled error during login.', displayableError)
+            actualDisplayableError = Lang.queryJS('login.error.unknown')
         }
 
-        setOverlayContent(actualDisplayableError.title, actualDisplayableError.desc, Lang.queryJS('login.tryAgain'));
+        setOverlayContent(actualDisplayableError.title, actualDisplayableError.desc, Lang.queryJS('login.tryAgain'))
         setOverlayHandler(() => {
-            formDisabled(false);
-            toggleOverlay(false);
-            lu = false;
-            checkLoginButtonEnabled();
-        });
-        toggleOverlay(true);
-    });
-});
+            formDisabled(false)
+            toggleOverlay(false)
+            lu = false
+            checkLoginButtonEnabled()
+        })
+        toggleOverlay(true)
+    })
+})

@@ -1,31 +1,25 @@
 # Custom Language File for Launcher Customizer
 
 [ejs.app]
-title = "Hasta Studios Launcher"
+title = "VLMP Launcher"
 
 [ejs.landing]
-mediaGitHubURL = "https://zelthoriaismp.cloud"
-mediaTwitterURL = "https://x.com/Zelthoriaismp87"
-mediaInstagramURL = "https://www.tiktok.com/@_zsmp_"
-mediaYouTubeURL = "https://youtube.com/@zsmpofc?si=bEThHknf_WXB7wqp"
-mediaDiscordURL = "https://discord.gg/zNWUXdt"
+mediaGitHubURL = "https://github.com/BONEE4/VLMPLauncher"
+mediaTwitterURL = "https://x.com/VLMPSMP/"
+mediaInstagramURL = "https://www.tiktok.com/@vlmp.smp"
+mediaYouTubeURL = "https://www.youtube.com/channel/UC6ACK0XVNBqBovHI7394zqg"
+mediaDiscordURL = "https://discord.gg/vlmp"
 
 [ejs.settings]
-sourceGithubLink = "https://github.com/Shisuiicaro/HastaStudiosLauncher"
-supportLink = "https://github.com/Shisuiicaro/HastaStudiosLauncher/issues"
+sourceGithubLink = "https://github.com/BONEE4/VLMPLauncherr"
+supportLink = "https://github.com/BONEE4/VLMPLauncher/issues"
 selectLanguage = "Select a Language"
 changeLanguageTitle = "Change the launcher language"
 changeLanguageDesc = "You can change the language in the list below. This text will not change if you change the language so you can find your wayback here to change it back"
 
 [ejs.welcome]
-welcomeHeader = "WELCOME TO ZSMP"
-welcomeDescription = """
-Welcome to ZSMP, where your Minecraft adventure begins! Immerse yourself in a world of endless possibilities and unforgettable experiences on the best SMP server you can imagine. Join our vibrant community of players and embark on epic quests, build amazing creations, and forge lasting friendships.
-
-But wait, there's more! To join in the fun, just hop onto our Discord server to self-register and gain access to our exclusive realm of emotions. Whether you're a seasoned explorer or a novice builder, ZSMP welcomes players of all skill levels.
-
-So, what are you waiting for? Click "Continue" and let the adventures begin!
-"""
+welcomeHeader = "BEM VINDO AO VLMP"
+welcomeDescription = "Muito bem vindo, caro Viajante. Eu serei o seu novo anfitrião por aqui. Desde cedo gostaria de avisar que estou feliz em recebê-lo aqui nesse dia tão incrível! Esperamos que possa aproveitar essa aventura com todo amor e carinho. Desejo uma boa sorte na sua aventura!"
 
 [ejs.overlay]
 changedLanguageHeader = "You changed the previous language"

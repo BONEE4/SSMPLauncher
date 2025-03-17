@@ -9,7 +9,7 @@ const logger = LoggerUtil.getLogger('ConfigManager')
 
 const sysRoot = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Application Support' : process.env.HOME)
 
-const dataPath = path.join(sysRoot, '.HastaStudiosLauncher')
+const dataPath = path.join(sysRoot, '.vlmplauncher')
 
 const launcherDir = app.getPath('userData')
 
@@ -56,8 +56,8 @@ exports.getAbsoluteMinRAM = function(ram){
 }
 
 exports.getAbsoluteMaxRAM = function(){
-    const mem = os.totalmem();
-    return Math.floor(mem / 1073741824);
+    const mem = os.totalmem()
+    return Math.floor(mem / 1073741824)
 }
 
 function resolveSelectedRAM(ram) {
@@ -82,14 +82,14 @@ const DEFAULT_CONFIG = {
             resWidth: 1280,
             resHeight: 720,
             fullscreen: false,
-            autoConnect: true,
+            autoConnect: false,
             launchDetached: true,
             SyncLanguage: true
         },
         launcher: {
             resWidth: 1920,
             resHeight: 1080,
-            language: 'en_US',
+            language: 'pt_BR',
             allowPrerelease: false,
             dataDirectory: dataPath
         }
@@ -874,23 +874,23 @@ exports.getAllLanguages = function(callback) {
             }
         })
     } else {
-    if(process.platform === 'darwin'){
-    fs.readdir(path.join(process.cwd(), 'Content', 'Resources', 'lang'), (err, files) => {
-        if (err) {
-            callback(err)
+        if(process.platform === 'darwin'){
+            fs.readdir(path.join(process.cwd(), 'Content', 'Resources', 'lang'), (err, files) => {
+                if (err) {
+                    callback(err)
+                } else {
+                    const fileNames = files.map(file => file.replace('.toml', ''))
+                    callback(null, fileNames)
+                }
+            })
         } else {
-            const fileNames = files.map(file => file.replace('.toml', ''))
-            callback(null, fileNames)
-        }
-    })
-    } else {
-    fs.readdir(path.join(process.cwd(), 'Resources', 'lang'), (err, files) => {
-        if (err) {
-            callback(err)
-        } else {
-            const fileNames = files.map(file => file.replace('.toml', ''))
-            callback(null, fileNames)
-        }
-    })
-    }}
+            fs.readdir(path.join(process.cwd(), 'Resources', 'lang'), (err, files) => {
+                if (err) {
+                    callback(err)
+                } else {
+                    const fileNames = files.map(file => file.replace('.toml', ''))
+                    callback(null, fileNames)
+                }
+            })
+        }}
 }

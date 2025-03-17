@@ -1,10 +1,11 @@
+/* eslint-disable no-undef */
 const fs = require('fs-extra')
 const isDev = require('./isdev')
 const path = require('path')
 const toml = require('toml')
 const merge = require('lodash.merge')
 
-const defaultLang = "en_US"
+const defaultLang = 'pt_BR'
 let config = null
 let lang
 
@@ -21,11 +22,12 @@ exports.loadLanguage = function(id){
         lang = merge(lang || {}, toml.parse(fs.readFileSync(path.join(process.cwd(), 'lang', `${id}.toml`))) || {})
     } else {
         if(process.platform === 'darwin'){
+            // eslint-disable-next-line no-undef
             lang = merge(lang || {}, toml.parse(fs.readFileSync(path.join(appPath, 'Contents', 'Resources', 'lang', `${id}.toml`))) || {})
-    } else {
-        lang = merge(lang || {}, toml.parse(fs.readFileSync(path.join(process.cwd(), 'resources', 'lang', `${id}.toml`))) || {})
-}
-}
+        } else {
+            lang = merge(lang || {}, toml.parse(fs.readFileSync(path.join(process.cwd(), 'resources', 'lang', `${id}.toml`))) || {})
+        }
+    }
 }
 
 exports.query = function(id, placeHolders){
@@ -70,7 +72,6 @@ exports.setupLanguage = function(dir){
     // Load Language Files and check for conflict with CM
     slectedLang = getLang(dir)
     if(slectedLang) {
-        console.log(slectedLang)
         exports.loadLanguage(slectedLang)
         // Load Custom Language File for Launcher Customizer
         exports.loadLanguage('_custom')
