@@ -689,7 +689,7 @@ function setNewsLoading(val){
 // Bind retry button.
 newsErrorRetry.onclick = () => {
     $('#newsErrorFailed').fadeOut(250, () => {
-        initNews()
+        //initNews()
         $('#newsErrorLoading').fadeIn(250)
     })
 }
@@ -708,16 +708,16 @@ newsArticleContentScrollable.onscroll = (e) => {
  * @returns {Promise.<void>} A promise which resolves when the news
  * content has finished loading and transitioning.
  */
-function reloadNews(){
-    return new Promise((resolve, reject) => {
-        $('#newsContent').fadeOut(250, () => {
-            $('#newsErrorLoading').fadeIn(250)
-            initNews().then(() => {
-                resolve()
-            })
-        })
-    })
-}
+// function reloadNews(){
+//     return new Promise((resolve, reject) => {
+//         $('#newsContent').fadeOut(250, () => {
+//             $('#newsErrorLoading').fadeIn(250)
+//             initNews().then(() => {
+//                 resolve()
+//             })
+//         })
+//     })
+// }
 
 let newsAlertShown = false
 
@@ -727,6 +727,23 @@ let newsAlertShown = false
 function showNewsAlert(){
     newsAlertShown = true
     $(newsButtonAlert).fadeIn(250)
+}
+
+/**
+ * Shows an error overlay, toggles off the launch area.
+ * 
+ * @param {string} title The overlay title.
+ * @param {string} desc The overlay description.
+ */
+function showLaunchFailure(title, desc){
+    setOverlayContent(
+        title,
+        desc,
+        Lang.queryJS('landing.launch.okay')
+    )
+    setOverlayHandler(null)
+    toggleOverlay(true)
+    toggleLaunchArea(false)
 }
 
 async function digestMessage(str) {
@@ -746,94 +763,94 @@ async function digestMessage(str) {
  * @returns {Promise.<void>} A promise which resolves when the news
  * content has finished loading and transitioning.
  */
-async function initNews(){
+// async function initNews(){
 
-    setNewsLoading(true)
+//     setNewsLoading(true)
 
-    const news = await loadNews()
+//     const news = await loadNews()
 
-    newsArr = news?.articles || null
+//     newsArr = news?.articles || null
 
-    if(newsArr == null){
-        // News Loading Failed
-        setNewsLoading(false)
+//     if(newsArr == null){
+//         // News Loading Failed
+//         setNewsLoading(false)
 
-        await $('#newsErrorLoading').fadeOut(250).promise()
-        await $('#newsErrorFailed').fadeIn(250).promise()
+//         await $('#newsErrorLoading').fadeOut(250).promise()
+//         await $('#newsErrorFailed').fadeIn(250).promise()
 
-    } else if(newsArr.length === 0) {
-        // No News Articles
-        setNewsLoading(false)
+//     } else if(newsArr.length === 0) {
+//         // No News Articles
+//         setNewsLoading(false)
 
-        ConfigManager.setNewsCache({
-            date: null,
-            content: null,
-            dismissed: false
-        })
-        ConfigManager.save()
+//         ConfigManager.setNewsCache({
+//             date: null,
+//             content: null,
+//             dismissed: false
+//         })
+//         ConfigManager.save()
 
-        await $('#newsErrorLoading').fadeOut(250).promise()
-        await $('#newsErrorNone').fadeIn(250).promise()
-    } else {
-        // Success
-        setNewsLoading(false)
+//         await $('#newsErrorLoading').fadeOut(250).promise()
+//         await $('#newsErrorNone').fadeIn(250).promise()
+//     } else {
+//         // Success
+//         setNewsLoading(false)
 
-        const lN = newsArr[0]
-        const cached = ConfigManager.getNewsCache()
-        let newHash = await digestMessage(lN.content)
-        let newDate = new Date(lN.date)
-        let isNew = false
+//         const lN = newsArr[0]
+//         const cached = ConfigManager.getNewsCache()
+//         let newHash = await digestMessage(lN.content)
+//         let newDate = new Date(lN.date)
+//         let isNew = false
 
-        if(cached.date != null && cached.content != null){
+//         if(cached.date != null && cached.content != null){
 
-            if(new Date(cached.date) >= newDate){
+//             if(new Date(cached.date) >= newDate){
 
-                // Compare Content
-                if(cached.content !== newHash){
-                    isNew = true
-                    showNewsAlert()
-                } else {
-                    if(!cached.dismissed){
-                        isNew = true
-                        showNewsAlert()
-                    }
-                }
+//                 // Compare Content
+//                 if(cached.content !== newHash){
+//                     isNew = true
+//                     showNewsAlert()
+//                 } else {
+//                     if(!cached.dismissed){
+//                         isNew = true
+//                         showNewsAlert()
+//                     }
+//                 }
 
-            } else {
-                isNew = true
-                showNewsAlert()
-            }
+//             } else {
+//                 isNew = true
+//                 showNewsAlert()
+//             }
 
-        } else {
-            isNew = true
-            showNewsAlert()
-        }
+//         } else {
+//             isNew = true
+//             showNewsAlert()
+//         }
 
-        if(isNew){
-            ConfigManager.setNewsCache({
-                date: newDate.getTime(),
-                content: newHash,
-                dismissed: false
-            })
-            ConfigManager.save()
-        }
+//         if(isNew){
+//             ConfigManager.setNewsCache({
+//                 date: newDate.getTime(),
+//                 content: newHash,
+//                 dismissed: false
+//             })
+//             ConfigManager.save()
+//         }
 
-        const switchHandler = (forward) => {
-            let cArt = parseInt(newsContent.getAttribute('article'))
-            let nxtArt = forward ? (cArt >= newsArr.length-1 ? 0 : cArt + 1) : (cArt <= 0 ? newsArr.length-1 : cArt - 1)
+//         const switchHandler = (forward) => {
+//             let cArt = parseInt(newsContent.getAttribute('article'))
+//             let nxtArt = forward ? (cArt >= newsArr.length-1 ? 0 : cArt + 1) : (cArt <= 0 ? newsArr.length-1 : cArt - 1)
     
-            displayArticle(newsArr[nxtArt], nxtArt+1)
-        }
+//             displayArticle(newsArr[nxtArt], nxtArt+1)
+//         }
 
-        document.getElementById('newsNavigateRight').onclick = () => { switchHandler(true) }
-        document.getElementById('newsNavigateLeft').onclick = () => { switchHandler(false) }
-        await $('#newsErrorContainer').fadeOut(250).promise()
-        displayArticle(newsArr[0], 1)
-        await $('#newsContent').fadeIn(250).promise()
-    }
+//         document.getElementById('newsNavigateRight').onclick = () => { switchHandler(true) }
+//         document.getElementById('newsNavigateLeft').onclick = () => { switchHandler(false) }
+//         await $('#newsErrorContainer').fadeOut(250).promise()
+//         displayArticle(newsArr[0], 1)
+//         await $('#newsContent').fadeIn(250).promise()
+//     }
 
 
-}
+// }
 
 /**
  * Add keyboard controls to the news UI. Left and right arrows toggle
@@ -887,71 +904,71 @@ function displayArticle(articleObject, index){
  * Load news information from the RSS feed specified in the
  * distribution index.
  */
-async function loadNews(){
+// async function loadNews(){
 
-    const distroData = await DistroAPI.getDistribution()
-    if(!distroData.rawDistribution.rss) {
-        loggerLanding.debug('No RSS feed provided.')
-        return null
-    }
+//     const distroData = await DistroAPI.getDistribution()
+//     if(!distroData.rawDistribution.rss) {
+//         loggerLanding.debug('No RSS feed provided.')
+//         return null
+//     }
 
-    const promise = new Promise((resolve, reject) => {
+//     const promise = new Promise((resolve, reject) => {
         
-        const newsFeed = distroData.rawDistribution.rss
-        const newsHost = new URL(newsFeed).origin + '/'
-        $.ajax({
-            url: newsFeed,
-            success: (data) => {
-                const items = $(data).find('item')
-                const articles = []
+//         const newsFeed = distroData.rawDistribution.rss
+//         const newsHost = new URL(newsFeed).origin + '/'
+//         $.ajax({
+//             url: newsFeed,
+//             success: (data) => {
+//                 const items = $(data).find('item')
+//                 const articles = []
 
-                for(let i=0; i<items.length; i++){
-                // JQuery Element
-                    const el = $(items[i])
+//                 for(let i=0; i<items.length; i++){
+//                 // JQuery Element
+//                     const el = $(items[i])
 
-                    // Resolve date.
-                    const date = new Date(el.find('pubDate').text()).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})
+//                     // Resolve date.
+//                     const date = new Date(el.find('pubDate').text()).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric'})
 
-                    // Resolve comments.
-                    let comments = el.find('slash\\:comments').text() || '0'
-                    comments = comments + ' Comment' + (comments === '1' ? '' : 's')
+//                     // Resolve comments.
+//                     let comments = el.find('slash\\:comments').text() || '0'
+//                     comments = comments + ' Comment' + (comments === '1' ? '' : 's')
 
-                    // Fix relative links in content.
-                    let content = el.find('content\\:encoded').text()
-                    let regex = /src="(?!http:\/\/|https:\/\/)(.+?)"/g
-                    let matches
-                    while((matches = regex.exec(content))){
-                        content = content.replace(`"${matches[1]}"`, `"${newsHost + matches[1]}"`)
-                    }
+//                     // Fix relative links in content.
+//                     let content = el.find('content\\:encoded').text()
+//                     let regex = /src="(?!http:\/\/|https:\/\/)(.+?)"/g
+//                     let matches
+//                     while((matches = regex.exec(content))){
+//                         content = content.replace(`"${matches[1]}"`, `"${newsHost + matches[1]}"`)
+//                     }
 
-                    let link   = el.find('link').text()
-                    let title  = el.find('title').text()
-                    let author = el.find('dc\\:creator').text()
+//                     let link   = el.find('link').text()
+//                     let title  = el.find('title').text()
+//                     let author = el.find('dc\\:creator').text()
 
-                    // Generate article.
-                    articles.push(
-                        {
-                            link,
-                            title,
-                            date,
-                            author,
-                            content,
-                            comments,
-                            commentsLink: link + '#comments'
-                        }
-                    )
-                }
-                resolve({
-                    articles
-                })
-            },
-            timeout: 2500
-        }).catch(err => {
-            resolve({
-                articles: null
-            })
-        })
-    })
+//                     // Generate article.
+//                     articles.push(
+//                         {
+//                             link,
+//                             title,
+//                             date,
+//                             author,
+//                             content,
+//                             comments,
+//                             commentsLink: link + '#comments'
+//                         }
+//                     )
+//                 }
+//                 resolve({
+//                     articles
+//                 })
+//             },
+//             timeout: 2500
+//         }).catch(err => {
+//             resolve({
+//                 articles: null
+//             })
+//         })
+//     })
 
-    return await promise
-}
+//     return await promise
+// }

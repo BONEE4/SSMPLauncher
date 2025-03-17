@@ -1,4 +1,6 @@
-﻿/**
+﻿/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+/**
  * AuthManager
  * 
  * This module aims to abstract login procedures. Results from Mojang's REST api
@@ -15,8 +17,8 @@ const { RestResponseStatus } = require('hasta-core/common')
 const { MojangRestAPI, MojangErrorCode } = require('hasta-core/mojang')
 const { MicrosoftAuth, MicrosoftErrorCode } = require('hasta-core/microsoft')
 const { AZURE_CLIENT_ID }    = require('./ipcconstants')
-const uuid = require('uuid');
-const crypto = require('crypto');
+const uuid = require('uuid')
+const crypto = require('crypto')
 
 
 const log = LoggerUtil.getLogger('AuthManager')
@@ -34,23 +36,23 @@ const log = LoggerUtil.getLogger('AuthManager')
  */
 exports.addAccount = async function(username) {
     try {
-        let userId = null;
+        let userId = null
 
-        const hash = crypto.createHash('md5');
-        hash.update(username);
-        userId = hash.digest('hex');
+        const hash = crypto.createHash('md5')
+        hash.update(username)
+        userId = hash.digest('hex')
         
-        const ret = ConfigManager.addMojangAuthAccount(userId, 'sry', username, username);
+        const ret = ConfigManager.addMojangAuthAccount(userId, 'sry', username, username)
         if (ConfigManager.getClientToken() == null) {
-            ConfigManager.setClientToken('sry');
+            ConfigManager.setClientToken('sry')
         }
-        ConfigManager.save();
-        return ret;
+        ConfigManager.save()
+        return ret
 
     } catch (err) {
-        return Promise.reject(err);
+        return Promise.reject(err)
     }
-};
+}
 
 const AUTH_MODE = { FULL: 0, MS_REFRESH: 1, MC_REFRESH: 2 }
 
@@ -160,12 +162,12 @@ exports.addMicrosoftAccount = async function(authCode) {
  */
 exports.removeMojangAccount = function(uuid) {
     try {
-        ConfigManager.removeAuthAccount(uuid);
-        ConfigManager.save();
-        return Promise.resolve();
+        ConfigManager.removeAuthAccount(uuid)
+        ConfigManager.save()
+        return Promise.resolve()
     } catch (err) {
-        log.error('Error while removing account', err);
-        return Promise.reject(err);
+        log.error('Error while removing account', err)
+        return Promise.reject(err)
     }
 }
 
@@ -258,6 +260,6 @@ exports.validateSelected = async function(){
     if(current.type === 'microsoft') {
         return await validateSelectedMicrosoftAccount()
     } else {
-        return true;
+        return true
     }
 }

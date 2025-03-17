@@ -1580,7 +1580,7 @@ function populateAboutVersionInformation(){
  */
 function populateReleaseNotes(){
     $.ajax({
-        url: 'https://github.com/Shisuiicaro/HastaStudiosLauncher/releases.atom',
+        url: 'https://github.com/BONEE4/VLMPLauncher/releases.atom',
         success: (data) => {
             const version = 'v' + remote.app.getVersion()
             const entries = $(data).find('entry')
