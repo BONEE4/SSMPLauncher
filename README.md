@@ -1,6 +1,3 @@
-
-<img src="https://zelthoriaismp.cloud/Launcher/assets/logo.png" alt="Logo" width="450">
-
 # VLMP Launcher
 
 A cracked fork of helios launcher and Zelthorian SMP.
