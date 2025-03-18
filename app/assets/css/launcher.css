@@ -3410,6 +3410,14 @@ input:checked+.toggleSwitchSlider:before {
     margin-right: 20px;
 }
 
+.landing_status {
+    height: 25px;
+    width: 2px;
+    background: rgba(107, 105, 105, 0.7);
+    margin-left: 30px;
+    margin-right: 10px;
+}
+
 /* * *
 * Landing View (Bottom Styles) | Left Content
 * * */
@@ -3423,7 +3431,7 @@ input:checked+.toggleSwitchSlider:before {
 /* Span which displays the player count of the selected server. */
 #player_count {
     color: #949494;
-    font-size: 8px;
+    font-size: 11px;
     font-weight: 900;
     text-shadow: 0px 0px 20px #949494;
     margin-left: 10px;
@@ -3433,12 +3441,12 @@ input:checked+.toggleSwitchSlider:before {
 #mojangStatusWrapper {
     position: relative;
     display: flex;
-    cursor: pointer;
+    cursor: default;
 }
 
 /* Icon which displays the status of the mojang services. */
 #mojang_status_icon {
-    font-size: 30px;
+    font-size: 35px;
     color: #848484;
     margin-left: 15px;
     font-family: 'sans-serif';
@@ -3619,6 +3627,7 @@ input:checked+.toggleSwitchSlider:before {
 
 /* The launch button. */
 #launch_button {
+    cursor: pointer;
     position: relative;
     padding: 8px 25px;
     border-radius: 7px;
@@ -3659,7 +3668,7 @@ input:checked+.toggleSwitchSlider:before {
         top: 7%;
         left: 0%;
         opacity: 0;
-        background: #fff;
+        background: #ffffff;
         box-shadow: 0 0 50px 30px #fff;
         -webkit-transform: skewX(-20deg);
         -moz-transform: skewX(-20deg);

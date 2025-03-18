@@ -133,7 +133,7 @@ continueButton = "CONTINUE"
 
 [js.discord]
 waiting = "Waiting for Client.."
-state = "Server: {shortId}"
+state = "CRACKED...."
 
 [js.index]
 microsoftLoginTitle = "Microsoft Login"
