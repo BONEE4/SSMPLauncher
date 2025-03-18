@@ -85,7 +85,9 @@ class ProcessBuilder {
         }
 
         if(ConfigManager.getCloseOnLaunch()){
-            win.close()
+            setTimeout(() => {
+                win.close()
+            }, 5000)
         }
 
         child.stdout.setEncoding('utf8')

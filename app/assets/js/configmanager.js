@@ -83,7 +83,7 @@ const DEFAULT_CONFIG = {
             resHeight: 720,
             fullscreen: false,
             autoConnect: false,
-            closeOnLaunch: true,
+            closeOnLaunch: false,
             launchDetached: true,
             SyncLanguage: true
         },
