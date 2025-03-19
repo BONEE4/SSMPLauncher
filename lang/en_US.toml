@@ -214,8 +214,8 @@ checking = "Checking for News"
 
 [js.landing.discord]
 loading = "Loading game.."
-joining = "Joining the realms of zelthoriai"
-joined = "Exploring the island of zelthoriai!"
+joining = "Waking up in the Nattura City"
+joined = "Exploring the Nattura City!"
 
 [js.overlay]
 dismiss = "Dismiss"
@@ -325,7 +325,7 @@ accountMigratedDesc = "You've attempted to login with a migrated account. Try ag
 invalidCredentialsTitle = "Error During Login:<br>Invalid Credentials"
 invalidCredentialsDesc = "The email/username or password you've entered is incorrect. Please try again."
 invalidUserTitle = "Error During Login:<br>Account not found"
-invalidUserDesc = "The account you are trying to login with does not exist. You may create a account on <a href=\"https://auth.zelthoriaismp.cloud/auth/register\">Zelthoriaismp.cloud</a>"
+invalidUserDesc = "The account you are trying to login with does not exist."
 tooManyAttemptsTitle = "Error During Login:<br>Too Many Attempts"
 tooManyAttemptsDesc = "There have been too many login attempts with this account recently. Please try again later."
 invalidTokenTitle = "Error During Login:<br>Invalid Token"
@@ -343,6 +343,6 @@ accountGoneDesc = "Account has been migrated to a Microsoft account. Please log 
 unreachableTitle = "Error During Login:<br>Unreachable"
 unreachableDesc = "Unable to reach the authentication servers. Ensure that they are online and you are connected to the internet."
 gameNotPurchasedTitle = "Error During Login:<br>Game Not Purchased"
-gameNotPurchasedDesc = "The account you are trying to login with do not exist. You may create a account on <a href=\"https://auth.zelthoriaismp.cloud/auth/register\">Zelthoriaismp.cloud</a>"
+gameNotPurchasedDesc = "The account you are trying to login with do not exist."
 unknownErrorTitle = "Unknown Error During Login"
 unknownErrorDesc = "An unknown error has occurred. Please see the console for details."
