@@ -21,7 +21,17 @@ exports.initRPC = function(genSettings, servSettings, initialDetails = Lang.quer
         smallImageKey: genSettings.smallImageKey,
         smallImageText: genSettings.smallImageText,
         startTimestamp: new Date().getTime(),
-        instance: false
+        instance: false,
+        buttons: [
+            {
+                label: Lang.queryJS('discord.server'),
+                url: Lang.queryEJS('landing.mediaDiscordURL')
+            },
+            {
+                label: Lang.queryJS('discord.social'),
+                url: Lang.queryEJS('landing.mediaYouTubeURL')
+            }
+        ]
     }
 
     client.on('ready', () => {

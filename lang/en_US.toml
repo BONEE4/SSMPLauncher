@@ -134,7 +134,9 @@ continueButton = "CONTINUE"
 
 [js.discord]
 waiting = "Waiting for Client.."
-state = "CRACKED...."
+state = "Playing on VLMP SMP"
+social = "Youtube"
+server = "Official Discord"
 
 [js.index]
 microsoftLoginTitle = "Microsoft Login"
