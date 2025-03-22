@@ -1596,7 +1596,7 @@ function populateReleaseNotes(){
     $.ajax({
         url: 'https://github.com/BONEE4/VLMPLauncher/releases.atom',
         success: (data) => {
-            const version = 'v' + remote.app.getVersion()
+            const version = remote.app.getVersion()
             const entries = $(data).find('entry')
             
             for(let i=0; i<entries.length; i++){

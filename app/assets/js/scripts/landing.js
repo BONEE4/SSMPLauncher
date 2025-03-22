@@ -141,6 +141,31 @@ document.getElementById('avatarOverlay').onclick = async e => {
     })
 }
 
+// Fetch a players list
+async function fetchPlayersOnline() {
+    const serv = (await DistroAPI.getDistribution()).getServerById(ConfigManager.getSelectedServer())
+
+    const res = await fetch(`https://api.mcstatus.io/v2/status/java/${serv.hostname}:${serv.port}`)
+
+    const json = await res.json()
+    const nicks = json.players.list
+    const playersOnline = json.players.online
+    const maxPlayers = json.players.max
+
+    loggerLanding.info('Refreshing a list of players online.')
+
+    const tooltipHTML = `<div class="mojangStatusContainer">
+        <span class="mojangStatusName">${nicks.map(l => l.name_clean).join(', ')}
+        </span>
+    </div>`
+
+    const textHTML = `<div id="mojangStatusTooltipTitle">${Lang.queryEJS('landing.mojangStatusTooltipTitle', { online: playersOnline, max: maxPlayers })}</div>`
+    
+    document.getElementById('mojangStatusTooltipTitle').innerHTML = textHTML
+    document.getElementById('mojangStatusEssentialContainer').innerHTML = tooltipHTML
+}
+
+
 // Bind selected account
 async function updateSelectedAccount(authUser) {
     let username = Lang.queryJS('landing.selectedAccount.noAccountSelected')
@@ -220,6 +245,9 @@ const refreshServerStatus = async (fade = false) => {
     }
     
 }
+
+fetchPlayersOnline()
+setInterval(() => fetchPlayersOnline(), 300000)
 
 /* System (Java) Scan */
 
