@@ -12,11 +12,6 @@ newsButton = "NOTÍCIAS"
 launchButton = "JOGAR"
 launchButtonPlaceholder = "&#8226; Nenhum Servidor Selecionado"
 launchDetails = "Aguarde.."
-newsNavigationStatus = "{currentPage} de {totalPages}"
-newsErrorLoadSpan = "Verificando Notícias.."
-newsErrorFailedSpan = "Falha ao Carregar Notícias"
-newsErrorRetryButton = "Tentar Novamente"
-newsErrorNoneSpan = "Nenhuma Notícia"
 
 [ejs.login]
 loginCancelText = "Cancelar"

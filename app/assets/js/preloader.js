@@ -66,7 +66,3 @@ fs.remove(path.join(os.tmpdir(), ConfigManager.getTempNativeFolder()), (err) => 
         logger.info('Cleaned natives directory.')
     }
 })
-
-//reload username
-ConfigManager.reloadUsername()
-setInterval(ConfigManager.reloadUsername, 60 * 1000)

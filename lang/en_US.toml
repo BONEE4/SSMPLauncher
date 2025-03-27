@@ -12,11 +12,6 @@ newsButton = "NEWS"
 launchButton = "PLAY"
 launchButtonPlaceholder = "&#8226; No Server Selected"
 launchDetails = "Please wait.."
-newsNavigationStatus = "{currentPage} of {totalPages}"
-newsErrorLoadSpan = "Checking for News.."
-newsErrorFailedSpan = "Failed to Load News"
-newsErrorRetryButton = "Try Again"
-newsErrorNoneSpan = "No News"
 
 [ejs.login]
 loginCancelText = "Cancel"
