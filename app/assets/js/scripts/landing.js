@@ -249,6 +249,23 @@ const refreshServerStatus = async (fade = false) => {
 fetchPlayersOnline()
 setInterval(() => fetchPlayersOnline(), 300000)
 
+/**
+ * Shows an error overlay, toggles off the launch area.
+ * 
+ * @param {string} title The overlay title.
+ * @param {string} desc The overlay description.
+ */
+function showLaunchFailure(title, desc){
+    setOverlayContent(
+        title,
+        desc,
+        Lang.queryJS('landing.launch.okay')
+    )
+    setOverlayHandler(null)
+    toggleOverlay(true)
+    toggleLaunchArea(false)
+}
+
 /* System (Java) Scan */
 
 /**
