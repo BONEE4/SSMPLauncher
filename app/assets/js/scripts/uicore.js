@@ -114,6 +114,8 @@ function showUpdateUI(info){
     }
 }
 
+// teste
+
 /* jQuery Example
 $(function(){
     loggerUICore.info('UICore Initialized');
