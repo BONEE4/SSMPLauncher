@@ -106,8 +106,8 @@ function changeAllowPrerelease(val){
 
 function showUpdateUI(info){
     //TODO Make this message a bit more informative `${info.version}`
-    document.getElementById('image_seal_container').setAttribute('update', true)
-    document.getElementById('image_seal_container').onclick = () => {
+    document.getElementById('launch_button').setAttribute('update', true)
+    document.getElementById('launch_button').onclick = () => {
         switchView(getCurrentView(), VIEWS.settings, 500, 500, () => {
             settingsNavItemListener(document.getElementById('settingsNavUpdate'), false)
         })
