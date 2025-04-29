@@ -104,17 +104,6 @@ function changeAllowPrerelease(val){
     ipcRenderer.send('autoUpdateAction', 'allowPrereleaseChange', val)
 }
 
-function showUpdateUI(info){
-    //TODO Make this message a bit more informative `${info.version}`
-    document.getElementById('launch_button').setAttribute('update', true)
-    document.getElementById('launch_button').onclick = () => {
-        switchView(getCurrentView(), VIEWS.settings, 500, 500, () => {
-            settingsNavItemListener(document.getElementById('settingsNavUpdate'), false)
-        })
-    }
-}
-
-// teste
 
 /* jQuery Example
 $(function(){
