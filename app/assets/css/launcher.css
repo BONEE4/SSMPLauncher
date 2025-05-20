@@ -3599,7 +3599,7 @@ input:checked+.toggleSwitchSlider:before {
     position: relative;
     padding: 8px 25px;
     border-radius: 7px;
-    border: 1px solid rgb(203,183,157);
+    border: 1px solid #cbb79d;
     font-size: 14px;
     text-transform: uppercase;
     font-weight: 600;
@@ -3615,7 +3615,7 @@ input:checked+.toggleSwitchSlider:before {
 
 #launch_button:hover {
     background: rgb(128, 115, 99);
-    box-shadow: 0 0 13px 5px rgb(241, 218, 187);
+    box-shadow: 0 0 13px 5px #f1dabb;
     -webkit-transition: all 0.2s ease-out;
     -moz-transition: all 0.2s ease-out;
     transition: all 0.2s ease-out;

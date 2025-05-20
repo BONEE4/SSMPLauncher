@@ -6,7 +6,7 @@
  */
 // Requirements
 const $                              = require('jquery')
-const {ipcRenderer, shell, webFrame} = require('electron')
+const {ipcRenderer, shell, webFrame, Notification} = require('electron')
 const remote                         = require('@electron/remote')
 const isDev                          = require('./assets/js/isdev')
 const { LoggerUtil }                 = require('hasta-core')

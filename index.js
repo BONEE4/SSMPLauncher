@@ -5,7 +5,6 @@ remoteMain.initialize()
 const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron')
 const autoUpdater                       = require('electron-updater').autoUpdater
 const ejse                              = require('ejs-electron')
-const fs                                = require('fs')
 const isDev                             = require('./app/assets/js/isdev')
 const path                              = require('path')
 const semver                            = require('semver')
@@ -16,7 +15,6 @@ const LangLoader                        = require('./app/assets/js/langloader')
 // Setup Lang
 const dir = path.join(app.getPath('userData'), 'config.json')
 LangLoader.setupLanguage(dir)
-
 
 // Setup auto updater.
 function initAutoUpdater(event, data) {
@@ -244,7 +242,7 @@ function createWindow() {
     remoteMain.enable(win.webContents)
 
     const data = {
-        bkid: Math.floor((Math.random() * fs.readdirSync(path.join(__dirname, 'app', 'assets', 'images', 'backgrounds')).length)),
+        bkid: Math.floor(Math.random() * 19),
         lang: (str, placeHolders) => LangLoader.queryEJS(str, placeHolders)
     }
     Object.entries(data).forEach(([key, val]) => ejse.data(key, val))
