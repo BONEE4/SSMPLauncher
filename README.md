@@ -1,4 +1,4 @@
-# VLMP Launcher
+# SSMP Launcher
 
 A cracked fork of helios launcher and Zelthorian SMP.
 

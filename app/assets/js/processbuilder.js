@@ -448,13 +448,13 @@ class ProcessBuilder {
             if(isDev){
                 
                 if (current.type === 'microsoft') {
-                    args.push('-Xdock:name=VLMPLauncher')
+                    args.push('-Xdock:name=SSMPLauncer')
                     args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
                     args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
                     args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
                     args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
                 } else {
-                    args.push('-Xdock:name=VLMPLauncher')
+                    args.push('-Xdock:name=SSMPLauncer')
                     args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
                     args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
                     args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
@@ -464,13 +464,13 @@ class ProcessBuilder {
                 }
             } else {
                 if (current.type === 'microsoft') {
-                    args.push('-Xdock:name=VLMPLauncher')
+                    args.push('-Xdock:name=SSMPLauncer')
                     args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
                     args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
                     args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))
                     args = args.concat(ConfigManager.getJVMOptions(this.server.rawServer.id))
                 } else {
-                    args.push('-Xdock:name=VLMPLauncher')
+                    args.push('-Xdock:name=SSMPLauncer')
                     args.push('-Xdock:icon=' + path.join(__dirname, '..', 'images', 'minecraft.icns'))
                     args.push('-Xmx' + ConfigManager.getMaxRAM(this.server.rawServer.id))
                     args.push('-Xms' + ConfigManager.getMinRAM(this.server.rawServer.id))

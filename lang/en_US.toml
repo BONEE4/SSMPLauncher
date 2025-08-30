@@ -5,7 +5,7 @@ usernameEditButton = "Edit"
 settingsTooltip = "Settings"
 serverStatus = "SERVER"
 serverStatusPlaceholder = "OFFLINE"
-mojangStatus = "VLMP"
+mojangStatus = "SSMP"
 mojangStatusTooltipTitle = "Online Players {online}/{max}"
 mojangStatusNETitle = "Non&nbsp;Essential"
 newsButton = "NEWS"
@@ -15,7 +15,7 @@ launchDetails = "Please wait.."
 
 [ejs.login]
 loginCancelText = "Cancel"
-loginSubheader = "VLMP LOGIN"
+loginSubheader = "SSMP LOGIN"
 loginEmailError = "* Invalid Value"
 loginEmailPlaceholder = "EMAIL OR USERNAME"
 loginPasswordError = "* Required"
@@ -129,7 +129,7 @@ continueButton = "CONTINUE"
 
 [js.discord]
 waiting = "Waiting for Client.."
-state = "Playing on VLMP SMP"
+state = "Playing on SSMP SMP"
 social = "Youtube"
 server = "Official Discord"
 

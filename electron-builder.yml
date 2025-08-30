@@ -1,5 +1,5 @@
-appId: 'VLMP Launcher'
-productName: 'VLMP Launcher'
+appId: 'SSMP Launcher'
+productName: 'SSMP Launcher'
 artifactName: '${productName}-setup-${version}.${ext}'
 
 copyright: 'Copyright © 2025-2025 BONEE'
@@ -42,8 +42,8 @@ linux:
   target: 'AppImage'
   maintainer: 'BONEE'
   vendor: 'BONEE'
-  synopsis: 'VLMP Launcherr'
-  description: 'Oficial Laucnher VLMP minecraft server'
+  synopsis: 'SSMP Launcherr'
+  description: 'Oficial Laucnher SSMP minecraft server'
   category: 'Game'
 
 
